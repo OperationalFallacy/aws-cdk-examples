@@ -6,7 +6,13 @@ This is project deploys s3 bucket with sqs notifications using basic CDK constru
 
 `cd node/s3-sqs`
 `npm install`
-`cdk deploy`
+
+```
+cdk deploy "S3Sqs*" \
+	--parameters S3SqsStackDev:environment=dev \
+	--parameters S3SqsStackTest:environment=test \
+	--parameters extAccount=111234567899 
+```
 
 ## Useful commands
  * `cdk metadata S3SqsStack` list resources
