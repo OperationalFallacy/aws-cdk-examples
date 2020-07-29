@@ -17,3 +17,14 @@ Resources:
     Metadata:
       resource: Mystack/myBucket/Resource
       comment: Shared S3 bucket for the environment
+
+  mySqs:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 1209600
+      QueueName:
+        !Sub 'ets-${AWS::AccountId}-${environment}-queue'
+      VisibilityTimeout: 300
+    Metadata:
+      resource: Mystack/mySqs/Resource
+      comment: sqs where bucket should send notifications
