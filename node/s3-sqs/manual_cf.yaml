@@ -1,0 +1,19 @@
+Parameters:
+  extAccount:
+    Type: String
+    Description: AWS account id that can assume CrossAccountRole role
+  environment:
+    Type: String
+    Description: Environment name
+
+Resources:
+  myBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        !Sub 'ets-${AWS::AccountId}-${environment}-s3-bucket'
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      resource: Mystack/myBucket/Resource
+      comment: Shared S3 bucket for the environment
