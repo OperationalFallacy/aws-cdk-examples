@@ -1,0 +1,53 @@
+Parameters:
+  extAccount:
+    Type: String
+    Description: AWS account id that can assume CrossAccountRole role
+  environment:
+    Type: String
+    Description: Environment name
+
+Resources:
+  myBucket:
+    Type: AWS::S3::Bucket
+    DependsOn: [ "SQSPolicy", "mySqs"]
+    Properties:
+      BucketName:
+        !Sub 'ets-${AWS::AccountId}-${environment}-s3-bucket'
+      NotificationConfiguration:
+        QueueConfigurations:
+          - Event: s3:ObjectCreated:*
+            Queue: !GetAtt mySqs.Arn
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      resource: Mystack/myBucket/Resource
+      comment: Shared S3 bucket for the environment
+
+  mySqs:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 1209600
+      QueueName:
+        !Sub 'ets-${AWS::AccountId}-${environment}-queue'
+      VisibilityTimeout: 300
+    Metadata:
+      resource: Mystack/mySqs/Resource
+      comment: sqs where bucket should send notifications
+  
+  SQSPolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal: "*"
+            Action: SQS:SendMessage
+            Resource: !GetAtt mySqs.Arn
+            # Workaround for CF circular dependency (queue -> bucket -> queue)
+            Condition:
+              ArnEquals:
+                aws:SourceArn:
+                  !Sub 'arn:aws:s3:*:*:ets-${AWS::AccountId}-${environment}-s3-bucket'
+      Queues:
+        - !Ref mySqs
