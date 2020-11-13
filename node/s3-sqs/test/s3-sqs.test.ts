@@ -1,5 +1,5 @@
 import { expect, matchTemplate, MatchStyle } from '@aws-cdk/assert';
-import *  cdk from '@aws-cdk/core';
+import * as cdk from '@aws-cdk/core';
 import * as S3Sqs from '../lib/s3-sqs-stack';
 
 test('Empty Stack', () => {

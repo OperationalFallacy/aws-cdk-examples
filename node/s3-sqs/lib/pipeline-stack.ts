@@ -15,13 +15,14 @@ export class PipelineStack extends Stack {
  
     new CdkPipeline(this, 'Pipeline', {
       // The pipeline name
-      pipelineName: 'MyServicePipeline',
+      pipelineName: 's3-sqs',
       cloudAssemblyArtifact,
       // Where the source can be found
       sourceAction: new codepipeline_actions.GitHubSourceAction({
         actionName: 'GitHub',
         output: sourceArtifact,
-        oauthToken:  SecretValue.ssmSecure('github-token', '1'),
+        
+        oauthToken:  SecretValue.secretsManager('github-token-new'),
         owner: 'OperationalFallacy',
         repo: 'aws-cdk-examples',
       }),
@@ -29,8 +30,8 @@ export class PipelineStack extends Stack {
        // How it will be built and synthesized
        synthAction: SimpleSynthAction.standardNpmSynth({
          sourceArtifact,
+         subdirectory: 'node/s3-sqs',
          cloudAssemblyArtifact,
-
          // We need a build step to compile the TypeScript Lambda
          buildCommand: 'npm run build'
        }),

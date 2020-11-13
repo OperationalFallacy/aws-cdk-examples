@@ -506,7 +506,6 @@ $RECYCLE.BIN/
 ### CDK-specific ignores ###
 *.swp
 cdk.context.json
-package-lock.json
 .cdk.staging
 cdk.out
 
