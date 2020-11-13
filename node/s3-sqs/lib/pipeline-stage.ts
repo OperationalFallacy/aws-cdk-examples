@@ -4,7 +4,7 @@ import { S3SqsStack } from './s3-sqs-stack';
 /**
  * Deployable unit of web service app
  */
-export class PipelinesDemoStage extends Stage {
+export class PipelinesStage extends Stage {
   public readonly BucketName: CfnOutput;
   
   constructor(scope: Construct, id: string, props?: StageProps) {
