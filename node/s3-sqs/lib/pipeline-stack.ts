@@ -39,9 +39,16 @@ export class PipelineStack extends Stack {
     });
 
     // This is where we add the application stages
-    pipeline.addApplicationStage(new PipelinesStage(this, 'PreProd', {
+    this.node.setContext('env', 'dev')
+    pipeline.addApplicationStage(new PipelinesStage(this, 'DeployDev', {
       env: { region: 'us-east-1' }
     }));
+    
+    this.node.setContext('env', 'prod')
+    pipeline.addApplicationStage(new PipelinesStage(this, 'DeployProd', {
+      env: { region: 'us-east-1' }
+    }));
+    
   }
 }
 
