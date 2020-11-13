@@ -1,6 +1,6 @@
-const { expect, matchTemplate, MatchStyle } = require('@aws-cdk/assert');
-const cdk = require('@aws-cdk/core');
-const S3Sqs = require('../lib/s3-sqs-stack');
+import { expect, matchTemplate, MatchStyle } from '@aws-cdk/assert';
+import *  cdk from '@aws-cdk/core';
+import * as S3Sqs from '../lib/s3-sqs-stack';
 
 test('Empty Stack', () => {
     const app = new cdk.App();

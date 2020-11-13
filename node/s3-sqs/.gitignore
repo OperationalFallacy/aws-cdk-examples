@@ -7,3 +7,9 @@ cdk.out
 # Parcel build directories
 .cache
 .build
+
+.LAST_BUILD
+*.snk
+*.js
+*.d.ts
+*.swp
