@@ -1,7 +1,7 @@
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
-import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
+import { CdkPipeline, ShellScriptAction, SimpleSynthAction } from "@aws-cdk/pipelines";
 import { PipelinesStage } from './pipeline-stage';
 
 /**
@@ -13,7 +13,7 @@ export class PipelineStack extends Stack {
 
     const sourceArtifact = new codepipeline.Artifact();
     const cloudAssemblyArtifact = new codepipeline.Artifact();
- 
+
     const pipeline = new CdkPipeline(this, 'Pipeline', {
       // The pipeline name
       pipelineName: 's3-sqs',
@@ -39,14 +39,29 @@ export class PipelineStack extends Stack {
     });
 
     // This is where we add the application stages - it should be branch-based perhaps
-    pipeline.addApplicationStage(new PipelinesStage(this, 'DeployDev', {
+    const devstage = new PipelinesStage(this, 'DeployDev', {
       env: { region: 'us-east-1' }
     },
     {
       stacksettings: {
         environment: 'dev'
       }
+    });    
+    const deploydev = pipeline.addApplicationStage(devstage);
+
+    deploydev.addActions(new ShellScriptAction({
+      actionName: 'TestInfra',
+      useOutputs: {
+        // Get the stack Output from the Stage and make it available in
+        // the shell script as $BucketName.
+        BucketName: pipeline.stackOutput(devstage.BucketName),
+      },
+      commands: [
+        // Use 'curl' to GET the given URL and fail if it returns an error
+        'aws s3 ls | grep $BucketName',
+      ],
     }));
+
     
     pipeline.addApplicationStage(new PipelinesStage(this, 'DeployProd', {
       env: { region: 'us-east-1' }
