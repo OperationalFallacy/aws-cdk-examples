@@ -3,6 +3,7 @@ import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
 import { CdkPipeline, ShellScriptAction, SimpleSynthAction } from "@aws-cdk/pipelines";
 import { PipelinesStage } from './pipeline-stage';
+import { PolicyStatement } from "@aws-cdk/aws-iam"
 
 /**
  * The stack that defines the application pipeline
@@ -49,8 +50,15 @@ export class PipelineStack extends Stack {
     });    
     const deploydev = pipeline.addApplicationStage(devstage);
 
+
+    const policy = new PolicyStatement({ 
+      actions: [ "s3:ListBuckets" ],
+      resources: [ "*" ]
+    });
+
     deploydev.addActions(new ShellScriptAction({
       actionName: 'TestInfra',
+      rolePolicyStatements: [ policy ],
       useOutputs: {
         // Get the stack Output from the Stage and make it available in
         // the shell script as $BucketName.
