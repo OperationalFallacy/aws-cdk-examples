@@ -52,8 +52,8 @@ export class PipelineStack extends Stack {
 
 
     const policy = new PolicyStatement({ 
-      actions: [ "s3:ListBuckets" ],
-      resources: [ "*" ]
+      actions: [ "s3:ListAllMyBuckets" ],
+      resources: [ "arn:aws:s3:::*" ]
     });
 
     deploydev.addActions(new ShellScriptAction({
