@@ -3,6 +3,7 @@ import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
 import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
 import { PipelinesStage } from './pipeline-stage';
+import { stackSettings } from './s3-sqs-stack';
 
 /**
  * The stack that defines the application pipeline
@@ -38,15 +39,23 @@ export class PipelineStack extends Stack {
        }),
     });
 
-    // This is where we add the application stages
-    this.node.setContext('env', 'dev')
+    // This is where we add the application stages - it should be branch-based perhaps
     pipeline.addApplicationStage(new PipelinesStage(this, 'DeployDev', {
       env: { region: 'us-east-1' }
+    },
+    {
+      stacksettings: {
+        environment: 'dev'
+      }
     }));
     
-    this.node.setContext('env', 'prod')
     pipeline.addApplicationStage(new PipelinesStage(this, 'DeployProd', {
       env: { region: 'us-east-1' }
+    },
+    {
+      stacksettings: {
+        environment: 'prod'
+      }
     }));
     
   }

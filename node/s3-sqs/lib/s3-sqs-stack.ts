@@ -5,20 +5,26 @@ import { SqsDestination} from '@aws-cdk/aws-s3-notifications';
 import { ServicePrincipal, Role, PolicyStatement } from '@aws-cdk/aws-iam';
 import { Construct, StackProps } from '@aws-cdk/core';
 
+export class stackSettings {
+  readonly stacksettings?: {
+    readonly environment?: string
+  }
+}
+
 export class S3SqsStack extends Stack {
   public readonly BucketName: CfnOutput;
 
-  constructor(scope: Construct, id: string, props: StackProps = {}) {
+  constructor(scope: Construct, id: string, props: StackProps = {}, stackconfig: stackSettings) {
     super(scope, id, props);
 
     const stack = Stack.of(this);
 
     const bucket = new Bucket(this, "myBucket", {
-        bucketName: 'ets'+'-'+stack.account+'-'+this.node.tryGetContext('env')+'-'+'s3-bucket',
+        bucketName: 'ets'+'-'+stack.account+'-'+ stackconfig.stacksettings?.environment +'-'+'s3-bucket',
         removalPolicy : RemovalPolicy.DESTROY});
 
     const my_queue = new Queue(this, 'mySqs', {
-      queueName: 'ets'+'-'+stack.account+'-'+this.node.tryGetContext('env')+'-'+'testQueue',
+      queueName: 'ets'+'-'+stack.account+'-'+ stackconfig.stacksettings?.environment +'-'+'testQueue',
       visibilityTimeout: Duration.seconds(300),
       retentionPeriod: Duration.seconds(1209600)
     });
