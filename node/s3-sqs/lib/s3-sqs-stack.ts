@@ -14,17 +14,17 @@ export class stackSettings {
 export class S3SqsStack extends Stack {
   public readonly BucketName: CfnOutput;
 
-  constructor(scope: Construct, id: string, props: StackProps = {}, stackconfig: stackSettings) {
+  constructor(scope: Construct, id: string, props?: StackProps, stackconfig?: stackSettings) {
     super(scope, id, props);
 
     const stack = Stack.of(this);
 
     const bucket = new Bucket(this, "myBucket", {
-        bucketName: 'ets'+'-'+stack.account+'-'+ stackconfig.stacksettings?.environment +'-'+'s3-bucket',
+        bucketName: 'ets'+'-'+stack.account+'-'+ stackconfig?.stacksettings?.environment +'-'+'s3-bucket',
         removalPolicy : RemovalPolicy.DESTROY});
 
     const my_queue = new Queue(this, 'mySqs', {
-      queueName: 'ets'+'-'+stack.account+'-'+ stackconfig.stacksettings?.environment +'-'+'testQueue',
+      queueName: 'ets'+'-'+stack.account+'-'+ stackconfig?.stacksettings?.environment +'-'+'testQueue',
       visibilityTimeout: Duration.seconds(300),
       retentionPeriod: Duration.seconds(1209600)
     });
