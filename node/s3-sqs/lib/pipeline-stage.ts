@@ -11,7 +11,7 @@ export class PipelinesStage extends Stage {
   
   constructor(scope: Construct, id: string, props: StageProps, stackconfig: stackSettings) {
     super(scope, id, props);
-    const service = new S3SqsStack(this, 'S3SqsStack'+this.node.tryGetContext('env'), {
+    const service = new S3SqsStack(this, 'S3SqsStack-'+stackconfig.stacksettings?.environment, {
       env: {
         region : 'us-east-1'
       }
