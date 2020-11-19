@@ -1,13 +1,15 @@
-# Example of CDK in Javascript
+# Example of CDK in Typescript
 
-This is project deploys AWS Codepipeline that deploys CDK app to create some infra: s3 bucket with sqs notifications.
+This is project deploys AWS Codepipeline that in turn runs and deploys CDK app to create some infra: s3 bucket with sqs notifications.
 
-It is using basic CDK constructs.
+App is using basic CDK constructs.
 
 ## Development
 
 `cd node/s3-sqs`
+
 `npm install`
+
 `npx cdk diff PipelineStack`
 
 AWS Codepipeline is created, it runs, updates itself and deployes application.
