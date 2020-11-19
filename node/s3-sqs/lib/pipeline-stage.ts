@@ -2,7 +2,7 @@ import { CfnOutput, Construct, Stage, StageProps } from '@aws-cdk/core';
 import { S3SqsStack, stackSettings } from './s3-sqs-stack';
 
 /**
- * Deployable unit of web service app
+ * Deployable unit
  */
 
 export class PipelinesStage extends Stage {

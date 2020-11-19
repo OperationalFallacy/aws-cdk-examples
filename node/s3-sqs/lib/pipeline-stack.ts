@@ -16,14 +16,13 @@ export class PipelineStack extends Stack {
     const cloudAssemblyArtifact = new codepipeline.Artifact();
 
     const pipeline = new CdkPipeline(this, 'Pipeline', {
-      // The pipeline name
       pipelineName: 's3-sqs',
       cloudAssemblyArtifact,
       // Where the source can be found
       sourceAction: new codepipeline_actions.GitHubSourceAction({
         actionName: 'GitHub',
         output: sourceArtifact,
-        branch: 'codepipeline',
+        branch: 'master',
         oauthToken:  SecretValue.secretsManager('github-token-new'),
         owner: 'OperationalFallacy',
         repo: 'aws-cdk-examples',
@@ -47,9 +46,9 @@ export class PipelineStack extends Stack {
       stacksettings: {
         environment: 'dev'
       }
-    });    
+    });
+ 
     const deploydev = pipeline.addApplicationStage(devstage);
-
 
     const policy = new PolicyStatement({ 
       actions: [ "s3:ListAllMyBuckets" ],
@@ -70,7 +69,6 @@ export class PipelineStack extends Stack {
       ],
     }));
 
-    
     pipeline.addApplicationStage(new PipelinesStage(this, 'DeployProd', {
       env: { region: 'us-east-1' }
     },
