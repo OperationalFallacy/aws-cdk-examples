@@ -22,7 +22,7 @@ export class PipelineStack extends Stack {
       sourceAction: new codepipeline_actions.GitHubSourceAction({
         actionName: 'GitHub',
         output: sourceArtifact,
-        branch: 'master',
+        branch: 'sqs_lambda_trigger',
         oauthToken:  SecretValue.secretsManager('github-token-new'),
         owner: 'OperationalFallacy',
         repo: 'aws-cdk-examples',
