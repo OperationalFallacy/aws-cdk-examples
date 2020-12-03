@@ -32,7 +32,7 @@ export class S3SqsStack extends Stack {
     });
 
     const second_queue = new Queue(this, 'SecondSqs', {
-      queueName: stack.account+'-'+ stackconfig?.stacksettings?.environment +'-'+'testQueue',
+      queueName: stack.account+'-'+ stackconfig?.stacksettings?.environment +'-'+'SecondQueue',
       visibilityTimeout: Duration.seconds(300),
       retentionPeriod: Duration.seconds(1209600)
     });
