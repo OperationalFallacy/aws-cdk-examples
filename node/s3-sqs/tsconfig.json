@@ -22,6 +22,6 @@
         "lib/init-templates/*/*/add-project.hook.ts"
     ],
     "exclude": [
-        "lib/init-templates/*/typescript/**/*.ts"
+        "lib/init-templates/*/typescript/**/*.ts", "function"
     ]
 }
