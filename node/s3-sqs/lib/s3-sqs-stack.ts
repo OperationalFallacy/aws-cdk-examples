@@ -6,6 +6,7 @@ import { ServicePrincipal, Role, PolicyStatement } from '@aws-cdk/aws-iam';
 import { Construct, StackProps } from '@aws-cdk/core';
 import { SqsEventSource } from '@aws-cdk/aws-lambda-event-sources';
 import { Function, Runtime, AssetCode } from '@aws-cdk/aws-lambda';
+import { StringParameter } from '@aws-cdk/aws-ssm';
 
 export class stackSettings {
   readonly stacksettings?: {
@@ -24,6 +25,12 @@ export class S3SqsStack extends Stack {
     const bucket = new Bucket(this, "myBucket", {
         bucketName: stack.account+'-'+ stackconfig?.stacksettings?.environment +'-'+'s3-bucket',
         removalPolicy : RemovalPolicy.DESTROY});
+        
+    const ext_q_arn = StringParameter.fromStringParameterAttributes(this, 'ext-account', {
+      parameterName: '/sqs/ext-account-id',
+    });
+    
+    const ext_q_name = 'arn:aws:sqs:us-east-1:'+ ext_q_arn.stringValue +':cross-prsnlaccount-test-sqs';
 
     const my_queue = new Queue(this, 'mySqs', {
       queueName: stack.account+'-'+ stackconfig?.stacksettings?.environment +'-'+'testQueue',
@@ -31,11 +38,7 @@ export class S3SqsStack extends Stack {
       retentionPeriod: Duration.seconds(1209600)
     });
 
-    const second_queue = new Queue(this, 'SecondSqs', {
-      queueName: stack.account+'-'+ stackconfig?.stacksettings?.environment +'-'+'SecondQueue',
-      visibilityTimeout: Duration.seconds(300),
-      retentionPeriod: Duration.seconds(1209600)
-    });
+    const second_queue = Queue.fromQueueArn(this, 'SecondSqs', ext_q_name);
 
     bucket.addEventNotification(EventType.OBJECT_CREATED,
       new SqsDestination(my_queue));
