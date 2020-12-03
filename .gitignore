@@ -510,3 +510,4 @@ cdk.context.json
 cdk.out
 
 .vscode
+.package-lock.json

@@ -41,7 +41,7 @@ export class S3SqsStack extends Stack {
       new SqsDestination(my_queue));
 
     const lambda = new Function(this, 'Lambda', {
-      code: new AssetCode('../function'),
+      code: new AssetCode('function'),
       handler: 'index.handler',
       runtime: Runtime.NODEJS_10_X,
     });
