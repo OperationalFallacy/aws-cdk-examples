@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
-    "target": "ES2017",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "esnext",
     "noImplicitAny": true,
-    "preserveConstEnums": true,
-    "outDir": "./built",
+    "moduleResolution": "node",
     "sourceMap": true
   },
-  "include": ["src-ts/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "include": ["**/*.ts", "tests/**/*"]
 }
