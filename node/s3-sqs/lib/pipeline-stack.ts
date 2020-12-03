@@ -69,14 +69,14 @@ export class PipelineStack extends Stack {
       ],
     }));
 
-    pipeline.addApplicationStage(new PipelinesStage(this, 'DeployProd', {
-      env: { region: 'us-east-1' }
-    },
-    {
-      stacksettings: {
-        environment: 'prod'
-      }
-    }));
+    // pipeline.addApplicationStage(new PipelinesStage(this, 'DeployProd', {
+    //   env: { region: 'us-east-1' }
+    // },
+    // {
+    //   stacksettings: {
+    //     environment: 'prod'
+    //   }
+    // }));
     
   }
 }
