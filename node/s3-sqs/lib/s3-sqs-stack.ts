@@ -46,7 +46,7 @@ export class S3SqsStack extends Stack {
 
     const lambda = new Function(this, 'Lambda', {
       memorySize: 512,
-      code: Code.fromAsset(path.resolve(__dirname, 'function')),
+      code: Code.fromAsset(path.resolve(__dirname, '../function')),
       handler: 'index.handler',
       runtime: Runtime.NODEJS_10_X,
     });
