@@ -7,6 +7,7 @@ const app = new App();
 
 new PipelineStack(app, 'PipelineStack', {
     env : {
-        region : 'us-east-1'
+        region : 'us-east-1',
+        account: process.env.CDK_DEFAULT_ACCOUNT, 
     }
 });

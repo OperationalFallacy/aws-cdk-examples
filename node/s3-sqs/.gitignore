@@ -13,3 +13,5 @@ cdk.out
 *.js
 *.d.ts
 *.swp
+package-lock.json
+*.js.map
