@@ -39,14 +39,14 @@ export class PipelineStack extends Stack {
     });
 
     // This is where we add the application stages - it should be branch-based perhaps
-    const devstage = new PipelinesStage(this, 'DeployDev', {
-      env: { region: 'us-east-1' }
-    },
-    {
-      stacksettings: {
-        environment: 'dev'
-      }
-    });
+    // const devstage = new PipelinesStage(this, 'DeployDev', {
+    //   env: { region: 'us-east-1' }
+    // },
+    // {
+    //   stacksettings: {
+    //     environment: 'dev'
+    //   }
+    // });
  
     const deploydev = pipeline.addApplicationStage(devstage);
 
