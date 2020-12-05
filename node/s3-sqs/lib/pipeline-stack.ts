@@ -2,7 +2,7 @@ import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
 import { CdkPipeline, ShellScriptAction, SimpleSynthAction } from "@aws-cdk/pipelines";
-import { PipelinesStage } from './pipeline-stage';
+//import { PipelinesStage } from './pipeline-stage';
 import { PolicyStatement } from "@aws-cdk/aws-iam"
 
 /**
@@ -58,14 +58,14 @@ export class PipelineStack extends Stack {
     deploydev.addActions(new ShellScriptAction({
       actionName: 'TestInfra',
       rolePolicyStatements: [ policy ],
-      useOutputs: {
-        // Get the stack Output from the Stage and make it available in
-        // the shell script as $BucketName.
-        BucketName: pipeline.stackOutput(devstage.BucketName),
-      },
+      // useOutputs: {
+      //   // Get the stack Output from the Stage and make it available in
+      //   // the shell script as $BucketName.
+      //   BucketName: pipeline.stackOutput(devstage.BucketName),
+      // },
       commands: [
         // Use 'curl' to GET the given URL and fail if it returns an error
-        'aws s3 ls | grep $BucketName',
+        'aws s3 ls',
       ],
     }));
 
