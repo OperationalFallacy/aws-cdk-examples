@@ -1,9 +1,9 @@
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
-import { CdkPipeline, ShellScriptAction, SimpleSynthAction } from "@aws-cdk/pipelines";
-//import { PipelinesStage } from './pipeline-stage';
-import { PolicyStatement } from "@aws-cdk/aws-iam"
+import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
+// import { PipelinesStage } from './pipeline-stage';
+// import { PolicyStatement } from "@aws-cdk/aws-iam"
 
 /**
  * The stack that defines the application pipeline
@@ -37,8 +37,8 @@ export class PipelineStack extends Stack {
          buildCommand: 'npm run build'
        }),
     });
-
-    // This is where we add the application stages - it should be branch-based perhaps
+    console.log(pipeline)
+    // // This is where we add the application stages - it should be branch-based perhaps
     // const devstage = new PipelinesStage(this, 'DeployDev', {
     //   env: { region: 'us-east-1' }
     // },
@@ -48,26 +48,26 @@ export class PipelineStack extends Stack {
     //   }
     // });
  
-    const deploydev = pipeline.addApplicationStage(devstage);
+    // const deploydev = pipeline.addApplicationStage(devstage);
 
-    const policy = new PolicyStatement({ 
-      actions: [ "s3:ListAllMyBuckets" ],
-      resources: [ "arn:aws:s3:::*" ]
-    });
+    // const policy = new PolicyStatement({ 
+    //   actions: [ "s3:ListAllMyBuckets" ],
+    //   resources: [ "arn:aws:s3:::*" ]
+    // });
 
-    deploydev.addActions(new ShellScriptAction({
-      actionName: 'TestInfra',
-      rolePolicyStatements: [ policy ],
-      // useOutputs: {
-      //   // Get the stack Output from the Stage and make it available in
-      //   // the shell script as $BucketName.
-      //   BucketName: pipeline.stackOutput(devstage.BucketName),
-      // },
-      commands: [
-        // Use 'curl' to GET the given URL and fail if it returns an error
-        'aws s3 ls',
-      ],
-    }));
+    // deploydev.addActions(new ShellScriptAction({
+    //   actionName: 'TestInfra',
+    //   rolePolicyStatements: [ policy ],
+    //   // useOutputs: {
+    //   //   // Get the stack Output from the Stage and make it available in
+    //   //   // the shell script as $BucketName.
+    //   //   BucketName: pipeline.stackOutput(devstage.BucketName),
+    //   // },
+    //   commands: [
+    //     // Use 'curl' to GET the given URL and fail if it returns an error
+    //     'aws s3 ls',
+    //   ],
+    // }));
 
     // pipeline.addApplicationStage(new PipelinesStage(this, 'DeployProd', {
     //   env: { region: 'us-east-1' }
